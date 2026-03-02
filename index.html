@@ -41,7 +41,7 @@
                     boton.style.display = 'block';
                     // ESTA ES LA PARTE QUE CORREGIMOS:
                     let numStr = elegidos.sort((a,b)=>a-b).join('-');
-                    boton.href = "https://wa.me_" + numStr;
+                    boton.href = "https://wa.me_" + elegidos.join('-');
                 } else {
                     boton.style.display = 'none';
                 }
