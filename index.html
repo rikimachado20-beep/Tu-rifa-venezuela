@@ -5,70 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Rifa Venezuela</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #121212; color: white; text-align: center; margin: 0; padding: 20px; }
-        h1 { color: #ffcc00; text-transform: uppercase; letter-spacing: 2px; }
-        .instrucciones { color: #aaa; font-size: 0.9rem; margin-bottom: 20px; }
-        
-        /* Cuadrícula de números */
-        #contenedor { display: grid; grid-template-columns: repeat(auto-fill, minmax(55px, 1fr)); gap: 10px; max-width: 500px; margin: 0 auto; padding: 15px; background: #1e1e1e; border-radius: 15px; }
-        
-        /* Botones de los números */
-        .n { padding: 15px 0; background: #333; border-radius: 8px; cursor: pointer; font-weight: bold; border: 1px solid #444; transition: 0.2s; user-select: none; }
-        .n:hover { background: #444; border-color: #ffcc00; }
-        
-        /* Clase cuando el número está seleccionado */
-        .s { background: #ffcc00 !important; color: #000; border-color: #fff; box-shadow: 0 0 10px rgba(255, 204, 0, 0.5); }
-        
-        /* Botón de WhatsApp flotante */
-        #btn-wa { display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #25d366; color: white; padding: 18px 35px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 1.1rem; box-shadow: 0 5px 20px rgba(0,0,0,0.5); z-index: 100; }
+        body { font-family: sans-serif; background: #121212; color: #fff; text-align: center; padding: 20px; }
+        #grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(55px, 1fr)); gap: 10px; max-width: 500px; margin: 20px auto; }
+        .n { padding: 15px; background: #333; border-radius: 8px; cursor: pointer; border: 1px solid #444; }
+        .s { background: #ffcc00 !important; color: #000; font-weight: bold; }
+        #btn { display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #25d366; color: #fff; padding: 15px 30px; border-radius: 50px; text-decoration: none; font-weight: bold; }
     </style>
 </head>
 <body>
-
-    <h1>🍀 GRAN RIFA</h1>
-    <p class="instrucciones">Toca los números que deseas apartar:</p>
-
-    <div id="contenedor"></div>
-
-    <a href="#" id="btn-wa">📲 APARTAR POR WHATSAPP</a>
+    <h1>🎰 SELECCIONA TUS NÚMEROS</h1>
+    <div id="grid"></div>
+    <a href="#" id="btn">ENVIAR A WHATSAPP</a>
 
     <script>
-        const totalNumeros = 100; // Puedes cambiarlo a 500 si quieres
-        let seleccionados = [];
-        const contenedor = document.getElementById('contenedor');
-        const btn = document.getElementById('btn-wa');
-        const MI_TELEFONO = "584242143308"; // Tu número ya configurado
+        const total = 100;
+        let sel = [];
+        const g = document.getElementById('grid');
+        const b = document.getElementById('btn');
 
-        // Generar los números
-        for (let i = 1; i <= totalNumeros; i++) {
-            let div = document.createElement('div');
-            div.innerText = i.toString().padStart(2, '0');
-            div.className = 'n';
-
-            div.onclick = () => {
-                // Lógica de selección
-                if (seleccionados.includes(i)) {
-                    seleccionados = seleccionados.filter(n => n !== i);
-                    div.classList.remove('s');
+        for (let i = 1; i <= total; i++) {
+            let d = document.createElement('div');
+            d.className = 'n';
+            d.innerText = i.toString().padStart(2, '0');
+            d.onclick = function() {
+                if (sel.includes(i)) {
+                    sel = sel.filter(n => n !== i);
+                    this.classList.remove('s');
                 } else {
-                    seleccionados.push(i);
-                    div.classList.add('s');
+                    sel.push(i);
+                    this.classList.add('s');
                 }
-
-                // Actualizar el botón de WhatsApp
-                if (seleccionados.length > 0) {
-                    btn.style.display = 'block';
-                    // Ordenamos los números para que el mensaje sea claro
-                    const lista = seleccionados.sort((a, b) => a - b).join(', ');
-                    const textoMsg = "Hola! Quiero apartar estos números para la rifa: " + lista;
-                    
-                    // Formato seguro para evitar errores de "No se puede acceder al sitio"
-                    btn.href = "https://wa.me" + MI_TELEFONO + "?text=" + encodeURIComponent(textoMsg);
+                
+                if (sel.length > 0) {
+                    b.style.display = 'block';
+                    // FORMATO FIJO PARA EVITAR ERRORES DE ACCESO AL SITIO
+                    let texto = "Hola, quiero apartar los números: " + sel.sort((x, y) => x - y).join(', ');
+                    b.href = "https://api.whatsapp.com" + encodeURIComponent(texto);
                 } else {
-                    btn.style.display = 'none';
+                    b.style.display = 'none';
                 }
             };
-            contenedor.appendChild(div);
+            g.appendChild(d);
         }
     </script>
 </body>
