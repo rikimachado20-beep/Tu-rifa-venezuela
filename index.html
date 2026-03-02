@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Rifa</title>
+    <style>
+        body { font-family: sans-serif; background: #121212; color: white; text-align: center; }
+        #grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); gap: 10px; padding: 20px; max-width: 600px; margin: auto; }
+        .n { padding: 15px; background: #333; border-radius: 5px; cursor: pointer; user-select: none; }
+        .s { background: #ffcc00; color: black; font-weight: bold; }
+        #btn { display: none; margin-top: 20px; padding: 15px; background: #25d366; color: white; text-decoration: none; border-radius: 30px; font-weight: bold; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); }
+    </style>
+</head>
+<body>
+    <h1>Selecciona tus números</h1>
+    <div id="grid"></div>
+    <a href="#" id="btn">Apartar por WhatsApp</a>
+    <script>
+        const total = 100; // Cambia esto si quieres más números
+        let sel = [];
+        const g = document.getElementById('grid');
+        const b = document.getElementById('btn');
+
+        for (let i = 1; i <= total; i++) {
+            let d = document.createElement('div');
+            d.className = 'n';
+            d.innerText = i.toString().padStart(2, '0');
+            d.onclick = () => {
+                if (sel.includes(i)) {
+                    sel = sel.filter(n => n !== i);
+                    d.classList.remove('s');
+                } else {
+                    sel.push(i);
+                    d.classList.add('s');
+                }
+                if (sel.length > 0) {
+                    b.style.display = 'block';
+                    // CAMBIA EL NÚMERO DE ABAJO POR EL TUYO (usa el código de país, ej: 58412...)
+                    b.href = `https://wa.me, quiero los números: ${sel.join(', ')}`;
+                } else {
+                    b.style.display = 'none';
+                }
+            };
+            g.appendChild(d);
+        }
+    </script>
+</body>
+</html>
