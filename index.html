@@ -3,41 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Rifa</title>
+    <title>Mi Rifa Venezuela</title>
     <style>
-        body { font-family: sans-serif; background: #121212; color: white; text-align: center; }
-        #grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); gap: 10px; padding: 20px; max-width: 600px; margin: auto; }
-        .n { padding: 15px; background: #333; border-radius: 5px; cursor: pointer; user-select: none; }
-        .s { background: #ffcc00; color: black; font-weight: bold; }
-        #btn { display: none; margin-top: 20px; padding: 15px; background: #25d366; color: white; text-decoration: none; border-radius: 30px; font-weight: bold; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); }
+        body { font-family: sans-serif; background: #121212; color: white; text-align: center; margin: 0; padding: 20px; }
+        #grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(55px, 1fr)); gap: 10px; max-width: 600px; margin: 20px auto; }
+        .n { padding: 15px 0; background: #333; border-radius: 8px; cursor: pointer; font-weight: bold; border: 1px solid #444; }
+        .s { background: #ffcc00 !important; color: #000; } /* Seleccionado */
+        #btn { display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #25d366; color: white; padding: 15px 30px; border-radius: 50px; text-decoration: none; font-weight: bold; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
     </style>
 </head>
 <body>
-    <h1>Selecciona tus números</h1>
+    <h1>🎰 Selecciona tus Números</h1>
     <div id="grid"></div>
-    <a href="#" id="btn">Apartar por WhatsApp</a>
+    <a href="#" id="btn">📲 Apartar por WhatsApp</a>
+
     <script>
-        const total = 100; // Cambia esto si quieres más números
-        let sel = [];
+        const total = 100;
+        let seleccionados = [];
         const g = document.getElementById('grid');
         const b = document.getElementById('btn');
+        const MI_TELEFONO = "584242143308"; // Tu número fijo aquí
 
         for (let i = 1; i <= total; i++) {
             let d = document.createElement('div');
             d.className = 'n';
             d.innerText = i.toString().padStart(2, '0');
             d.onclick = () => {
-                if (sel.includes(i)) {
-                    sel = sel.filter(n => n !== i);
+                if (seleccionados.includes(i)) {
+                    seleccionados = seleccionados.filter(n => n !== i);
                     d.classList.remove('s');
                 } else {
-                    sel.push(i);
+                    seleccionados.push(i);
                     d.classList.add('s');
                 }
-                if (sel.length > 0) {
+
+                if (seleccionados.length > 0) {
                     b.style.display = 'block';
-                    // CAMBIA EL NÚMERO DE ABAJO POR EL TUYO (usa el código de país.
-                    b.href = `https://wa.me/ 584242143308 ${sel.join(', ')}`;
+                    // IMPORTANTE: Aquí separamos el teléfono de los boletos
+                    const mensaje = encodeURIComponent(`Hola! Quiero apartar estos números: ${seleccionados.join(', ')}`);
+                    b.href = `https://wa.me{MI_TELEFONO}?text=${mensaje}`;
                 } else {
                     b.style.display = 'none';
                 }
